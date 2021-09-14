@@ -6,6 +6,7 @@ You should first launch the gazebo simulator via
 ```sh
 roslaunch gazebo_kinova_interface jaco_gazebo.launch
 # or roslaunch gazebo_kinova_interface jaco_gazebo.launch rqt:=true
+# where rqt provides a GUI for testing applying force at each joint
 ```
 
 Then, the jaco arm can be control via
