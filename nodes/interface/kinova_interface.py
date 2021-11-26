@@ -15,7 +15,14 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 
 class KinovaInterface:
-    def __init__(self, arm_type: str="j2n6s300", dim_joint: int=6,dim_finger: int=3,dim_finger_tip: int=3, wait: bool=True):
+    def __init__(
+        self,
+        arm_type: str = "j2n6s300",
+        dim_joint: int = 6,
+        dim_finger: int = 3,
+        dim_finger_tip: int = 3,
+        wait: bool = True,
+    ):
         super().__init__()
         self.n_dim = dim_joint + dim_finger + dim_finger_tip
         self.arm_type = arm_type
@@ -33,23 +40,27 @@ class KinovaInterface:
             for i in range(dim_joint)
         ]
         # add finger force publishers
-        self.effort_joints_pub.extend([
-            rospy.Publisher(
-                f"/{self.arm_type}/finger_{i + 1}_effort_controller/command",
-                Float64,
-                queue_size=10,
-            )
-            for i in range(dim_finger)
-        ])
+        self.effort_joints_pub.extend(
+            [
+                rospy.Publisher(
+                    f"/{self.arm_type}/finger_{i + 1}_effort_controller/command",
+                    Float64,
+                    queue_size=10,
+                )
+                for i in range(dim_finger)
+            ]
+        )
         # add finger tip force publishers
-        self.effort_joints_pub.extend([
-            rospy.Publisher(
-                f"/{self.arm_type}/finger_tip_{i + 1}_effort_controller/command",
-                Float64,
-                queue_size=10,
-            )
-            for i in range(dim_finger_tip)
-        ])
+        self.effort_joints_pub.extend(
+            [
+                rospy.Publisher(
+                    f"/{self.arm_type}/finger_tip_{i + 1}_effort_controller/command",
+                    Float64,
+                    queue_size=10,
+                )
+                for i in range(dim_finger_tip)
+            ]
+        )
 
         self.subscriber = rospy.Subscriber(
             f"/{self.arm_type}/joint_states", JointState, self.new_state_cb
